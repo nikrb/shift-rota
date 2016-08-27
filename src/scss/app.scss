@@ -1,0 +1,24 @@
+// sass variable examples
+$red:                   #EA7882;
+$table_border_colour:   #dddddd;
+
+$font-family-base:      'Segoe UI', 'HelveticaNeue-Light', sans-serif;
+
+$max-content-width:     1000px;
+
+.example {
+  h1 {
+    color: $red;
+  }
+}
+
+table {
+  border-top: 2px solid $table_border_colour;
+}
+
+td, th {
+  border: 2px solid $table_border_colour;
+  width: 10%;
+  text-align: center;
+  vertical-align: middle;
+}
