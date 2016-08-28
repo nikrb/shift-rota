@@ -59,20 +59,20 @@ app.get('/api/shift', function(req, res) {
   const start_time = moment(dt).date(1);
   const end_time = moment(dt).add( 1, 'months').date(1);
 
-  const monday_start = moment( start_time).isoWeekday(1);
+  const monday_start = moment( start_time).isoWeekday(1).startOf( "day");
   console.log( "monday start time", monday_start.format( dfmt));
 
-  let sunday_end = moment( end_time).isoWeekday(7);
+  let sunday_end = moment( end_time).isoWeekday(7).endOf( "day");
   console.log( "sunday end day, time", sunday_end.date(), sunday_end.format( dfmt));
 
-  // if we have a full week of the next month, the don't include it
+  // if we have a full week of the next month, then don't include it
   if( sunday_end.date() >= 7){
     sunday_end = moment( end_time).subtract( 1, "day").isoWeekday(7);
   }
   console.log( "final sunday end day:", sunday_end.date());
 
   db.collection( "shift").find({
-    start_time : { $gt : start_time.toDate(), $lt : end_time.toDate()}
+    start_time : { $gt : monday_start.toDate(), $lt : sunday_end.toDate()}
   })
   .toArray()
   .then( (shifts) => {
