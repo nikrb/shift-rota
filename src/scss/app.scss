@@ -22,3 +22,11 @@ td, th {
   text-align: center;
   vertical-align: middle;
 }
+
+td:hover {
+  background-color: yellow;
+}
+
+td {
+  cursor: pointer;
+}
