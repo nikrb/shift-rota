@@ -13,11 +13,13 @@ export default class ShiftTableSection extends React.Component {
         </thead>
         <tbody>
           <ShiftTableRow key={"day"+key_ndx}
-                        day_row={true}
-                        cols={this.props.day_cols} />
+            day_row={true}
+            cols={this.props.day_cols}
+            onShiftClicked={this.props.onShiftClicked} />
           <ShiftTableRow key={"night"+key_ndx}
-                        day_row={false}
-                        cols={this.props.night_cols} />
+            day_row={false}
+            cols={this.props.night_cols}
+            onShiftClicked={this.props.onShiftClicked} />
         </tbody>
       </table>
     );

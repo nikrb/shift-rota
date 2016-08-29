@@ -3,6 +3,9 @@ import React from 'react';
 import ShiftTableSection from './ShiftTableSection';
 
 export default class ShiftTable extends React.Component {
+  shiftClicked( shift){
+    console.log( "shift clicked:", shift);
+  }
   render(){
     let first_date = new Date( this.props.show_date);
 
@@ -40,7 +43,8 @@ export default class ShiftTable extends React.Component {
         <div className="well">
           <ShiftTableSection start_date={start_date}
                           day_cols={day_cols}
-                          night_cols={night_cols} />
+                          night_cols={night_cols}
+                          onShiftClicked={this.shiftClicked.bind(this)} />
         </div>
       );
     });

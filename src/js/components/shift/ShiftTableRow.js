@@ -1,12 +1,10 @@
 import React from 'react';
 
 export default class ShiftTableRow extends React.Component {
+  cellClick( data){
+    this.props.onShiftClicked( data);
+  }
   render(){
-    /*
-    const cols = this.props.cols.map( (col, i) => {
-      return <td key={i}>{col}</td>
-    });
-    */
     const hdr = this.props.day_row? <td key="day">Day</td> : <td key="night">Night</td>;
     return (
       <tr>{hdr}
@@ -14,7 +12,7 @@ export default class ShiftTableRow extends React.Component {
             if( col === null){
               return <td key={ndx}></td>;
             } else {
-              return <td key={ndx}>{col.client.initials}</td>;
+              return <td onClick={this.cellClick.bind(this, col)} key={ndx}>{col.client.initials}</td>;
             }
         })}</tr>
     );
