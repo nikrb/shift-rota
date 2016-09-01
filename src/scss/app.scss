@@ -12,6 +12,12 @@ $max-content-width:     1000px;
   }
 }
 
+.modal-dialogue-close {
+  a:hover {
+    text-decoration: none;
+  }
+}
+
 table {
   border-top: 2px solid $table_border_colour;
 }
