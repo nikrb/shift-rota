@@ -4,7 +4,7 @@ import ShiftTableSection from './ShiftTableSection';
 
 export default class ShiftTable extends React.Component {
   shiftClicked( shift){
-    console.log( "shift clicked:", shift);
+    this.props.shiftClicked( shift);
   }
   render(){
     let first_date = new Date( this.props.show_date);

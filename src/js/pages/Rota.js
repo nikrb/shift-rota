@@ -6,6 +6,7 @@ javascript date to month: toLocaleString( "en-gb", { month:"long"})}
 import React from 'react';
 import moment from 'moment';
 
+import ShiftDialogue from '../components/shift/ShiftDialogue';
 import ShiftTable from '../components/shift/ShiftTable';
 
 import ShiftStore from '../stores/ShiftStore';
@@ -17,7 +18,8 @@ export default class Rota extends React.Component {
     this.getShifts = this.getShifts.bind(this);
     this.state = {
       shifts : [],
-      show_date : moment()
+      show_date : moment(),
+      selected_shift: null
     };
   }
   componentWillMount(){
@@ -51,6 +53,17 @@ export default class Rota extends React.Component {
       this.loadShifts();
     });
   }
+  shiftClicked( shift){
+    console.log( "shift clicked");
+    this.setState( { selected_shift: shift});
+  }
+  onClosed(){
+    console.log( "shift dlg closed");
+    this.setState( { selected_shift: null});
+  }
+  onDelete(){
+    console.log( "delete shift:", this.state.selected_shift);
+  }
 
   render() {
     const month_style= {
@@ -72,7 +85,10 @@ export default class Rota extends React.Component {
           </button>
         </div>
         <ShiftTable show_date={this.state.show_date.toDate()} shifts={this.state.shifts}
-                    days_in_month={days_in_month} />
+          days_in_month={days_in_month} shiftClicked={this.shiftClicked.bind(this)} />
+        <ShiftDialogue selected_shift={this.state.selected_shift}
+          onClosed={this.onClosed.bind(this)}
+          deleteShift={this.onDelete.bind(this)}/>
       </div>
     );
   }
