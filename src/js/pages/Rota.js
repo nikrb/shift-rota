@@ -65,9 +65,15 @@ export default class Rota extends React.Component {
   }
   shiftClicked( shift){
     if( shift){
-      if( shift.day_row){
-        const start_time = moment().startOf( 'day').hour( 8).toDate();
-        const end_time = moment().startOf( 'day').hour( 17).toDate();
+      if( typeof shift.day_row !== "undefined"){
+        let start_time, end_time;
+        if( shift.day_row){
+          start_time = moment().startOf( 'day').hour( 8).toDate();
+          end_time = moment().startOf( 'day').hour( 17).toDate();
+        } else {
+          start_time = moment().startOf( 'day').hour( 17).toDate();
+          end_time = moment().startOf( 'day').add( 1, 'days').hour( 8).toDate();
+        }
         this.setState( {selected_shift: { client: { initials:""},
           start_time: start_time, end_time: end_time}});
       } else {

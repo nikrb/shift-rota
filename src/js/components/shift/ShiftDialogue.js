@@ -87,11 +87,11 @@ export default class ShiftDialogue extends React.Component {
             </div>
             <div className="form-group" >
               <div className="col-sm-offset-2 col-sm-2">
-                { this.props.selected_shift ? (
+                { this.props.selected_shift.client ? (
                   <button id="delete_button" className="btn btn-danger"
-                    onClick={this.props.deleteShift}>Delete</button>) :
-                  <button id="delete_button" className="btn btn-success"
-                    onClick={this.props.createShift}>Create</button>
+                    onClick={this.props.deleteShift}>Delete</button>) : (
+                  <button id="create_button" className="btn btn-success"
+                    onClick={this.props.createShift}>Create</button>)
                 }
               </div>
             </div>
