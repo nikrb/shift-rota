@@ -51,26 +51,35 @@ export default class ShiftDialogue extends React.Component {
             style={closeButtonStyle}>
             &times;
           </a>
-          <div style={dialogueTitle} className="text-center" >
-            Shift Details
+          <div style={dialogueTitle} >
+            <h2>Shift Details</h2>
           </div>
-          <form className="well">
+          <form className="form-horizontal well">
             <div className="form-group">
-              <label htmlFor="client_initials" className="col-sm-2 control-label">Client</label>
-              <input id="client_initials" value={this.props.selected_shift.client.initials} readOnly />
+                <label htmlFor="client_initials" className="col-sm-2 control-label">Client</label>
+                <div className="col-sm-10">
+                  <input id="client_initials"
+                    value={this.props.selected_shift.client.initials}
+                    className="form-control" readOnly />
+                </div>
             </div>
             <div className="form-group">
-              <label htmlFor="start_time" className="col-sm-2 control-label" >Start</label>
-              <input id="start_time" value={start_time_string} readOnly />
+                <label htmlFor="start_time" className="col-sm-2 control-label" >Start</label>
+                <div className="col-sm-10">
+                  <input id="start_time" value={start_time_string} className="form-control" readOnly />
+                </div>
             </div>
             <div className="form-group">
-              <label htmlFor="end_time" className="col-sm-2 control-label" >End</label>
-              <input id="end_time" value={end_time_string} readOnly />
+                <label htmlFor="end_time" className="col-sm-2 control-label" >End</label>
+                <div className="col-sm-10">
+                  <input id="end_time" value={end_time_string} className="form-control" readOnly />
+                </div>
             </div>
             <div className="form-group" >
-              <label htmlFor="delete_button" className="col-sm-2" />
-              <button id="delete_button" className="btn btn-danger"
-                onClick={this.props.deleteShift}>Delete</button>
+              <div className="col-sm-offset-2 col-sm-2">
+                <button id="delete_button" className="btn btn-danger"
+                  onClick={this.props.deleteShift}>Delete</button>
+              </div>
             </div>
           </form>
         </div>

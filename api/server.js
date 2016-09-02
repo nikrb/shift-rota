@@ -44,6 +44,18 @@ app.use(function(req, res, next) {
     next();
 });
 
+app.delete( "/api/shift", function( req, res){
+  const shift_id = req.query.shift_id;
+  db.collection( "shift").deleteOne( { _id: ObjectId( shift_id)})
+  .then( function( results){
+    res.json( { result: results.result.ok});
+  })
+  .catch( function( error){
+    console.log( "@server/app.delete:/api/shift failed", error);
+    res.json( { err: error});
+  });
+});
+
 app.get('/api/shift', function(req, res) {
 
   const month = parseInt( req.query.month);
@@ -115,7 +127,7 @@ app.listen(app.get('port'), function() {
   console.log('Server started: https://localhost:' + app.get('port') + '/');
 });
 
-// helpers
+// helpers ////////////////////////////////////////////////////////// helpers
 
 function findShiftsByDay( target_day, target_month, shifts){
   let ret = [];

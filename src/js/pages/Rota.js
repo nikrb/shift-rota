@@ -39,6 +39,13 @@ export default class Rota extends React.Component {
     const shifts =  ShiftStore.getAll();
     this.setState( { shifts : shifts});
   }
+  deleteShift(){
+    if( this.state.selected_shift){
+      ShiftActions.deleteShift( this.state.selected_shift._id);
+    } else {
+      console.log( "@Rota.deleteShift no shift selected");
+    }
+  }
   prevMonth(e){
     const prev_date = moment( this.state.show_date).subtract( 1, "months");
     this.setState( { show_date: prev_date}, () => {
@@ -54,17 +61,11 @@ export default class Rota extends React.Component {
     });
   }
   shiftClicked( shift){
-    console.log( "shift clicked");
     this.setState( { selected_shift: shift});
   }
   onClosed(){
-    console.log( "shift dlg closed");
     this.setState( { selected_shift: null});
   }
-  onDelete(){
-    console.log( "delete shift:", this.state.selected_shift);
-  }
-
   render() {
     const month_style= {
       margin: "1em"
@@ -88,7 +89,7 @@ export default class Rota extends React.Component {
           days_in_month={days_in_month} shiftClicked={this.shiftClicked.bind(this)} />
         <ShiftDialogue selected_shift={this.state.selected_shift}
           onClosed={this.onClosed.bind(this)}
-          deleteShift={this.onDelete.bind(this)}/>
+          deleteShift={this.deleteShift.bind(this)}/>
       </div>
     );
   }

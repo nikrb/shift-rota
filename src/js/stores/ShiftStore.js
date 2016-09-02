@@ -10,12 +10,31 @@ class ShiftStore extends EventEmitter {
   getAll(){
     return this.shifts;
   }
+  removeShift( shift_tgt_id){
+    // TODO: is this correct? this.shifts = this.shifts.filter( obj => obj._id === shift._id);
+    this.shifts = this.shifts.map( (shift) => {
+      if( shift.day && shift.day._id === shift_tgt_id){
+        shift.day = null;
+      } else if( shift.night && shift.night._id === shift_tgt_id){
+        shift.night = null;
+      }
+      return shift;
+    });
+  }
+  /**
+  TODO: seems there is new syntax for switch, but I get errors with it
+    switch( var){ case "a":{...}, case "b":{...}}
+  **/
   handleActions( action){
     switch( action.type){
-      case "RECEIVE_SHIFTS":{
+      case "RECEIVE_SHIFTS":
         this.shifts = action.shifts;
         this.emit( "change");
-      }
+        break;
+      case "DELETE_SHIFT_SUCCESS":
+        this.removeShift( action.shift_id);
+        this.emit( "change");
+        break;
     }
   }
 }
