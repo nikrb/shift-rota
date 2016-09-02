@@ -1,4 +1,12 @@
 react implementation of shift rota system.
+Got here using many tutorials, in particular:
+
+* React main site tutorials : https://github.com/nikrb/products
+* fcc : https://github.com/FreeCodeCamp/FreeCodeCamp/wiki/Setting-Up-A-React-ES6-Webpack-Project
+* LearnCode.academy on youtube series up to flux - no redux yet. Note the following repos branch names rougly correspond to the video titles:
+  * https://github.com/nikrb/learn2react
+  * https://github.com/nikrb/learn2flux
+* so many examples, tutorials and articles on stack overflow.
 
 To start:
 
