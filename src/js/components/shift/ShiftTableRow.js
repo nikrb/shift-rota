@@ -10,7 +10,7 @@ export default class ShiftTableRow extends React.Component {
       <tr>{hdr}
           {this.props.cols.map( ( col, ndx) => {
             if( col === null){
-              return <td key={ndx}></td>;
+              return <td onClick={this.cellClick.bind( this, { new_day: this.props.day_row})} key={ndx}></td>;
             } else {
               return <td onClick={this.cellClick.bind(this, col)} key={ndx}>{col.client.initials}</td>;
             }

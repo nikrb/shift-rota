@@ -46,6 +46,9 @@ export default class Rota extends React.Component {
       console.log( "@Rota.deleteShift no shift selected");
     }
   }
+  createShift( shift_data){
+    console.log( "create new shift:", shift_data);
+  }
   prevMonth(e){
     const prev_date = moment( this.state.show_date).subtract( 1, "months");
     this.setState( { show_date: prev_date}, () => {
@@ -61,7 +64,22 @@ export default class Rota extends React.Component {
     });
   }
   shiftClicked( shift){
-    this.setState( { selected_shift: shift});
+    if( shift){
+      if( shift.day_row){
+        const start_time = moment().startOf( 'day').hour( 8).toDate();
+        const end_time = moment().startOf( 'day').hour( 17).toDate();
+        this.setState( {selected_shift: { client: { initials:""},
+          start_time: start_time, end_time: end_time}});
+      } else {
+        this.setState( { selected_shift: shift});
+      }
+    } else {
+      console.log( "@Rota.shiftClicked shift is null");
+    }
+  }
+  onDlgClick( e){
+    console.log( "@Rota.onDlgClick");
+    e.stopPropagation();
   }
   onClosed(){
     this.setState( { selected_shift: null});
@@ -88,8 +106,10 @@ export default class Rota extends React.Component {
         <ShiftTable show_date={this.state.show_date.toDate()} shifts={this.state.shifts}
           days_in_month={days_in_month} shiftClicked={this.shiftClicked.bind(this)} />
         <ShiftDialogue selected_shift={this.state.selected_shift}
+          onDlgClick={this.onDlgClick.bind(this)}
           onClosed={this.onClosed.bind(this)}
-          deleteShift={this.deleteShift.bind(this)}/>
+          deleteShift={this.deleteShift.bind(this)}
+          createShift={this.createShift.bind(this)}/>
       </div>
     );
   }

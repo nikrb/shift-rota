@@ -45,7 +45,7 @@ export default class ShiftDialogue extends React.Component {
     }
     return (this.props.selected_shift !== null )? (
       <div style={overlayStyles} onClick={this.props.onClosed}>
-        <div style={dialogStyles}  className="modal-dialogue-close" >
+        <div style={dialogStyles} onClick={this.props.onDlgClick} className="modal-dialogue-close" >
           <a role="button"
             onClick={this.props.onClosed}
             style={closeButtonStyle}>
@@ -57,11 +57,21 @@ export default class ShiftDialogue extends React.Component {
           <form className="form-horizontal well">
             <div className="form-group">
                 <label htmlFor="client_initials" className="col-sm-2 control-label">Client</label>
-                <div className="col-sm-10">
-                  <input id="client_initials"
-                    value={this.props.selected_shift.client.initials}
-                    className="form-control" readOnly />
-                </div>
+                { this.props.selected_shift.client ? (
+                    <div className="col-sm-10">
+                      <input id="client_initials"
+                        value={this.props.selected_shift.client.initials}
+                        className="form-control" readOnly />
+                    </div>
+                  ) : (
+                    <div className="col-sm-10">
+                      <select id="client_initials" className="form-control" >
+                        <option >JW</option>
+                        <option >SM</option>
+                      </select>
+                    </div>
+                  )
+                }
             </div>
             <div className="form-group">
                 <label htmlFor="start_time" className="col-sm-2 control-label" >Start</label>
@@ -77,8 +87,12 @@ export default class ShiftDialogue extends React.Component {
             </div>
             <div className="form-group" >
               <div className="col-sm-offset-2 col-sm-2">
-                <button id="delete_button" className="btn btn-danger"
-                  onClick={this.props.deleteShift}>Delete</button>
+                { this.props.selected_shift ? (
+                  <button id="delete_button" className="btn btn-danger"
+                    onClick={this.props.deleteShift}>Delete</button>) :
+                  <button id="delete_button" className="btn btn-success"
+                    onClick={this.props.createShift}>Create</button>
+                }
               </div>
             </div>
           </form>
