@@ -12,6 +12,12 @@ To start:
 
 Been developing on local win7 machine so unixy version may need some attention to get it to work.
 
+To restore mongo to testdb from dumps directory:
+
+```
+mongorestore --db rotadb --drop dump/rotadb
+```
+
 ### On the way here ...
 
 trying to run backend api with webpack
