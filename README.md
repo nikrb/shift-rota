@@ -6,6 +6,7 @@ Got here using many tutorials, in particular:
 * LearnCode.academy on youtube series up to flux - no redux yet. Note the following repos branch names rougly correspond to the video titles:
   * https://github.com/nikrb/learn2react
   * https://github.com/nikrb/learn2flux
+* react dialogue: https://github.com/marcio/react-skylight
 * so many examples, tutorials and articles on stack overflow.
 
 To start:
