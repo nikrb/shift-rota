@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import Datetime from 'react-datetime';
 
 export default class ShiftDialogue extends React.Component {
   render(){
@@ -76,7 +77,7 @@ export default class ShiftDialogue extends React.Component {
             <div className="form-group">
                 <label htmlFor="start_time" className="col-sm-2 control-label" >Start</label>
                 <div className="col-sm-10">
-                  <input id="start_time" value={start_time_string} className="form-control" readOnly />
+                  <Datetime id="start_time" />
                 </div>
             </div>
             <div className="form-group">
