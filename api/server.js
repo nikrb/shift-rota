@@ -18,6 +18,9 @@ MongoClient.connect(url, function(err, dbc) {
   db = dbc;
 });
 
+const datetime_format = "DD-MMM-YYYY HH:mm";
+const date_format = "DD-MMM-YYYY"; // moment format
+
 var app = express();
 
 app.set('port', (process.env.PORT || 8080));
@@ -58,24 +61,23 @@ app.delete( "/api/shift", function( req, res){
 
 app.get('/api/shift', function(req, res) {
 
-  const month = parseInt( req.query.month);
-  const year = parseInt( req.query.year);
+  const month = 8; // parseInt( req.query.month);
+  const year = 2016; // parseInt( req.query.year);
 
-  const dfmt = "DD-MMM-YYYY"; // moment format
   const dt = moment( [year, month, 1]);
   /*
   const dtqs = "01-"+month+"-"+year;
   const dt = moment( dtqs, "DD-M-YYYY");
   */
-  console.log( "request date:", dt.format( dfmt));
+  console.log( "request date:", dt.format( date_format));
   const start_time = moment(dt).date(1);
   const end_time = moment(dt).add( 1, 'months').date(1);
 
   const monday_start = moment( start_time).isoWeekday(1).startOf( "day");
-  console.log( "monday start time", monday_start.format( dfmt));
+  console.log( "monday start time", monday_start.format( datetime_format));
 
   let sunday_end = moment( end_time).isoWeekday(7).endOf( "day");
-  console.log( "sunday end day, time", sunday_end.date(), sunday_end.format( dfmt));
+  console.log( "sunday end day, time", sunday_end.date(), sunday_end.format( datetime_format));
 
   // if we have a full week of the next month, then don't include it
   if( sunday_end.date() >= 7){
@@ -142,6 +144,10 @@ function findShiftsByDay( target_day, target_month, shifts){
 }
 function fillHoles( shifts, start_date, end_date){
   console.log( "@fillHoles");
+  // we want a date for every shift slot, even if a shift doesn't exist
+  let current_shift_date = moment( start_date);
+  console.log( "current shift date:", current_shift_date.format( datetime_format));
+  // array of shifts to be generated and returned
   let ret = [];
   const start_day = start_date.date();
   const days_in_start_month = moment( start_date).add( 1, 'months').date(0).date();
@@ -169,7 +175,10 @@ function fillHoles( shifts, start_date, end_date){
   // if start day is first of month, we need to keep going
   for( let day_count = 0; day_count < total_days; day_count++){
     const shifts_for_day = findShiftsByDay( day, current_month, shifts);
-    let both_shifts = { day: null, night: null};
+    let both_shifts = {
+      day: { slot_date: current_shift_date.format( date_format)},
+      night: { slot_date: current_shift_date.format( date_format)}
+    };
     if( shifts_for_day && shifts_for_day.length ){
       shifts_for_day.forEach( function( shift){
         let sh_hour = shift.start_time.getHours();
@@ -181,6 +190,8 @@ function fillHoles( shifts, start_date, end_date){
       });
     }
     ret.push( both_shifts);
+    current_shift_date.add( 1, 'day');
+    // TODO: can't we just increment a moment.js date?
     if( day >= days_in_month[month_ndx]){
       day = 1;
       month_ndx += 1;
