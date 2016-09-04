@@ -9,10 +9,17 @@ export default class ShiftTableRow extends React.Component {
     return (
       <tr>{hdr}
           {this.props.cols.map( ( col, ndx) => {
-            if( col === null){
-              return <td onClick={this.cellClick.bind( this, { new_day: this.props.day_row})} key={ndx}></td>;
+            // if we don't have any shifts loaded yet use a dummy td
+            if( col) {
+              // slot_date exists for a shift slot that isn't filled
+              // we used to just have shift as null
+              if( col.slot_date){
+                return <td onClick={this.cellClick.bind( this, col)} key={ndx}></td>;
+              } else {
+                return <td onClick={this.cellClick.bind(this, col)} key={ndx}>{col.client.initials}</td>;
+              }
             } else {
-              return <td onClick={this.cellClick.bind(this, col)} key={ndx}>{col.client.initials}</td>;
+              return <td key={ndx}></td>;
             }
         })}</tr>
     );

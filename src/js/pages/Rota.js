@@ -65,6 +65,16 @@ export default class Rota extends React.Component {
   }
   shiftClicked( shift){
     if( shift){
+      // slot_date exists if shift is not filled
+      if( shift.slot_date){
+        const start_time = moment( shift.slot_date, "DD-MMM-YYYY").toDate();
+        const end_time = moment( shift.slot_date, "DD-MMM-YYYY").toDate();
+        this.setState( {selected_shift: { client: { initials:""},
+          start_time: start_time, end_time: end_time}});
+      } else {
+        this.setState( { selected_shift: shift});
+      }
+      /* TODO: remove old code
       if( typeof shift.day_row !== "undefined"){
         let start_time, end_time;
         if( shift.day_row){
@@ -79,8 +89,9 @@ export default class Rota extends React.Component {
       } else {
         this.setState( { selected_shift: shift});
       }
+      */
     } else {
-      console.log( "@Rota.shiftClicked shift is null");
+      console.error( "clicked shift is null");
     }
   }
   onDlgClick( e){

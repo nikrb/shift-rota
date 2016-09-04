@@ -44,6 +44,12 @@ export default class ShiftDialogue extends React.Component {
       start_time_string = moment( this.props.selected_shift.start_time).format( "DD-MMM-YYYY HH:mm");
       end_time_string = moment( this.props.selected_shift.end_time).format( "DD-MMM-YYYY HH:mm");
     }
+    console.log( "selected shift:", this.props.selected_shift);
+    // TODO: there must be a better way
+    let existing_shift = false;
+    if( this.props.selected_shift){
+      existing_shift = this.props.selected_shift.client.initials.length > 0;
+    }
     return (this.props.selected_shift !== null )? (
       <div style={overlayStyles} onClick={this.props.onClosed}>
         <div style={dialogStyles} onClick={this.props.onDlgClick} className="modal-dialogue-close" >
@@ -58,7 +64,7 @@ export default class ShiftDialogue extends React.Component {
           <form className="form-horizontal well">
             <div className="form-group">
                 <label htmlFor="client_initials" className="col-sm-2 control-label">Client</label>
-                { this.props.selected_shift.client ? (
+                { existing_shift ? (
                     <div className="col-sm-10">
                       <input id="client_initials"
                         value={this.props.selected_shift.client.initials}
@@ -77,22 +83,40 @@ export default class ShiftDialogue extends React.Component {
             <div className="form-group">
                 <label htmlFor="start_time" className="col-sm-2 control-label" >Start</label>
                 <div className="col-sm-10">
-                  <Datetime id="start_time" />
+                  { existing_shift ? (
+                      <input id="end_time" value={start_time_string} className="form-control" readOnly />
+                    ):(
+                      <Datetime id="start_time"
+                        defaultValue={ this.props.selected_shift.start_time}
+                        dateFormat="DD-MMM-YYYY"
+                        timeFormat="HH:mm"
+                        viewMode="time" />
+                  )}
                 </div>
             </div>
             <div className="form-group">
                 <label htmlFor="end_time" className="col-sm-2 control-label" >End</label>
                 <div className="col-sm-10">
-                  <input id="end_time" value={end_time_string} className="form-control" readOnly />
+                  { existing_shift ? (
+                      <input id="end_time" value={end_time_string} className="form-control" readOnly />
+                    ) : (
+                      <Datetime id="start_time"
+                        defaultValue={ this.props.selected_shift.end_time}
+                        dateFormat="DD-MMM-YYYY"
+                        timeFormat="HH:mm" />
+                    )
+                  }
                 </div>
             </div>
             <div className="form-group" >
               <div className="col-sm-offset-2 col-sm-2">
-                { this.props.selected_shift.client ? (
-                  <button id="delete_button" className="btn btn-danger"
-                    onClick={this.props.deleteShift}>Delete</button>) : (
-                  <button id="create_button" className="btn btn-success"
-                    onClick={this.props.createShift}>Create</button>)
+                { existing_shift ? (
+                    <button id="delete_button" className="btn btn-danger"
+                      onClick={this.props.deleteShift}>Delete</button>
+                  ) : (
+                    <button id="create_button" className="btn btn-success"
+                      onClick={this.props.createShift}>Create</button>
+                  )
                 }
               </div>
             </div>
