@@ -78,7 +78,14 @@ function getUserIdByName( users, name){
 }
 function getUsers( names){
   var promise = new Promise( function(resolve, reject){
-    db.collection( "user").find( { name : { $in : names}})
+    // use initials instead of name
+    let initials = [];
+    names.forEach( function( name){
+      const bits = name.split( " ");
+      initials.push( bits[0].charAt(0).toUpperCase() +
+        bits[bits.length-1].charAt(0).toUpperCase());
+    });
+    db.collection( "user").find( { initials : { $in : initials}})
     .toArray( function( err, users){
       if( err){
         console.error( "failed to gets users:", err);
