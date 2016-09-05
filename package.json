@@ -18,6 +18,7 @@
     "moment": "^2.14.1",
     "morgan": "^1.7.0",
     "multer": "^1.2.0",
+    "pdfreader": "^0.1.4",
     "react-datetime": "^2.5.0",
     "react-dropzone": "^3.5.3",
     "react-router": "^2.6.1",
@@ -26,7 +27,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server --port $PORT --host $IP  --content-base dist/ &",
-    "start-api": "node api/server.js &",
+    "start-api": "nodemon api/server.js",
     "dos-start": "node_modules/.bin/nodemon api/server.js"
   },
   "devDependencies": {
