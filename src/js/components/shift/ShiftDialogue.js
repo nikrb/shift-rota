@@ -76,7 +76,6 @@ export default class ShiftDialogue extends React.Component {
       start_time_string = moment( this.props.selected_shift.start_time).format( "DD-MMM-YYYY HH:mm");
       end_time_string = moment( this.props.selected_shift.end_time).format( "DD-MMM-YYYY HH:mm");
     }
-    console.log( "selected shift:", this.props.selected_shift);
     // TODO: there must be a better way
     let existing_shift = false;
     if( this.props.selected_shift){
