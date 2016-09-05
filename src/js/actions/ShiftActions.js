@@ -16,12 +16,7 @@ export function loadShifts( year, month){
 export function createShift( shift){
   dispatcher.dispatch( { type: "CREATE_SHIFT"});
   console.log( "create shift post api:", shift);
-  // FIXME: post turns up with empty body at server end
-  axios.post( "/api/shifts", {
-    client_initials: shift.client_initials,
-    start_time: shift.start_time,
-    end_time: shift.end_time
-  })
+  axios.post( "/api/shifts", shift)
   .then( (response) => {
     dispatcher.dispatch( { type: "CREATE_SHIFT_SUCCESS", shift: response.data});
   })

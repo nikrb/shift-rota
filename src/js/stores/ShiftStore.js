@@ -25,6 +25,8 @@ class ShiftStore extends EventEmitter {
   }
   addShift( shift){
     console.log( "add new shift", shift);
+    // FIXME: we can't add the shift in without knowing whether it is a day
+    // or night shift (or other generally speaking)
   }
   /**
   TODO: seems there is new syntax for switch, but I get errors with it

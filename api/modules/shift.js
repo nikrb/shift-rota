@@ -15,10 +15,40 @@ const datetime_format = "DD-MMM-YYYY HH:mm";
 const date_format = "DD-MMM-YYYY"; // moment format
 
 module.exports.create = function( req, res){
-  // FIXME: post body is empty
-  console.log( "insert new shift:", req.params, req.body, req.data, req.query);
-  // db.collection( "shift").insertOne( )
-  res.json( { result: "ok"});
+  const { client_initials, start_time, end_time} = req.body;
+  console.log( "insert new shift initials[%s] start[%s] end[%s]", client_initials, start_time, end_time);
+
+  db.collection( "user").find( { initials : { $in: [
+    client_initials, "NS"
+  ]}}).toArray( function( err, users){
+    if( err){
+      console.error( "failed to gets users:", err);
+      res.json( err);
+    } else {
+      let owner_id, client_id;
+      if( users[0].initials === "NS"){
+        owner_id = users[0]._id;
+        client_id = users[1]._id;
+      } else {
+        owner_id = users[1]._id;
+        client_id = users[0]._id;
+      }
+      db.collection( "shift").insertOne( {
+        owner_id : owner_id,
+        client_id : client_id,
+        start_time : new Date( start_time),
+        end_time : new Date( end_time)
+      }).then( function( results){
+        if( results.insertedCount === 1){
+          res.json( results.ops[0]);
+        } else {
+          res.json( { error: 1, message:"insert failed"});
+        }
+      }).catch( function( err){
+        res.json( err);
+      });
+    }
+  });
 };
 
 module.exports.delete = function( req, res){
