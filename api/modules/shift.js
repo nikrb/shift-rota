@@ -137,11 +137,10 @@ function fillHoles( shifts, start_date, end_date){
   let month_ndx = 0; // to iterate days_in_month
   let current_month = start_date.month();
   let day = start_day;
-  // FIXME: february must hit a 4 week layout, mon 1st to sun 28th
+  // TODO: february must hit a 4 week layout, mon 1st to sun 28th
+  // haha it was this year, Monday, 1 February 2016, 2021, 2027, 2038, 2044, 2049
+  // ah not 2016, that's a leap year, and 2044
   const total_days = 35; // 5 weeks worth
-  // no increment as we need to reset the day when we wrap end of month
-  // for( let day = start_day; day <= end_day; ){
-  // if start day is first of month, we need to keep going
   for( let day_count = 0; day_count < total_days; day_count++){
     const shifts_for_day = findShiftsByDay( day, current_month, shifts);
     let both_shifts = {
