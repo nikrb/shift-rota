@@ -12,4 +12,4 @@ module.exports = function( app){
   app.get('/api/shift', function(req, res) {
     Shift.find( req, res);
   });
-}
+};
