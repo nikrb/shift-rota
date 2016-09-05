@@ -13,9 +13,15 @@ app.set('port', (process.env.PORT || 8080));
 app.use('/', express.static(path.join(__dirname, '../dist')));
 
 app.post( '/api/upload', upload.single( 'pdf'), function( req, res){
+  let ret = "file type not supported";
   console.log( "@POST api/upload filepath:", req.file.path);
-  parseRota( req.file.path);
-  res.end( "ok");
+  const filename = req.file.originalname;
+  const ext = filename.substr(filename.lastIndexOf('.')+1);
+  if( ext === "pdf"){
+    ret = "ok";
+    parseRota( req.file.path);
+  }
+  res.end( ret);
 });
 
 app.use(bodyParser.json());
