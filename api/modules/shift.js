@@ -37,25 +37,17 @@ module.exports.find = function( req, res){
   const year = parseInt( req.query.year);
 
   const dt = moment( [year, month, 1]);
-  /*
-  const dtqs = "01-"+month+"-"+year;
-  const dt = moment( dtqs, "DD-M-YYYY");
-  */
   console.log( "request date:", dt.format( date_format));
-  const start_time = moment(dt).date(1);
-  const end_time = moment(dt).add( 1, 'months').date(1);
+  const monday_start = moment( dt).isoWeekday(1).startOf( "day");
+  console.log( "monday start date", monday_start.format( datetime_format));
 
-  const monday_start = moment( start_time).isoWeekday(1).startOf( "day");
-  console.log( "monday start time", monday_start.format( datetime_format));
-
-  let sunday_end = moment( end_time).isoWeekday(7).endOf( "day");
-  console.log( "sunday end day, time", sunday_end.date(), sunday_end.format( datetime_format));
+  let sunday_end = moment( dt).add( 1, 'months').isoWeekday(7).endOf( "day");
+  console.log( "sunday end date", sunday_end.format( datetime_format));
 
   // if we have a full week of the next month, then don't include it
   if( sunday_end.date() >= 7){
-    sunday_end = moment( end_time).subtract( 1, "day").isoWeekday(7);
+    sunday_end.subtract( 1, 'week');
   }
-  console.log( "final sunday end day:", sunday_end.date());
 
   db.collection( "shift").find({
     start_time : { $gt : monday_start.toDate(), $lt : sunday_end.toDate()}
@@ -70,7 +62,7 @@ module.exports.find = function( req, res){
           ObjectId( shift.owner_id), ObjectId( shift.client_id)
         ]}}).toArray( function( err, users){
           if( err){
-            console.log( "failed to gets users:", err);
+            console.error( "failed to gets users:", err);
             reject( err);
           } else {
             if( shift.owner_id.toHexString() === users[0]._id.toHexString()){
