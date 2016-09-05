@@ -1,3 +1,6 @@
+
+module.exports = parseRota;
+
 var moment = require( 'moment');
 var PdfReader = require( 'pdfreader').PdfReader;
 var MongoClient = require('mongodb').MongoClient;
@@ -157,7 +160,7 @@ function loadComplete( lines){
   });
 }
 
-module.exports = function( filepath){
+function parseRota( filepath){
   console.log( "parsing rota:", filepath);
   var lines = [];
   new PdfReader().parseFileItems( filepath, function(err, item){
