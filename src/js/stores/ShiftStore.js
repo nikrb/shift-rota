@@ -13,6 +13,8 @@ class ShiftStore extends EventEmitter {
   removeShift( shift_tgt_id){
     // TODO: is this correct? this.shifts = this.shifts.filter( obj => obj._id === shift._id);
     this.shifts = this.shifts.map( (shift) => {
+      // FIXME: I don't think we use null values anymore, need to set a dummy
+      // shift with slot_date set to date part of start_time of shift we're removing
       if( shift.day && shift.day._id === shift_tgt_id){
         shift.day = null;
       } else if( shift.night && shift.night._id === shift_tgt_id){
@@ -20,6 +22,9 @@ class ShiftStore extends EventEmitter {
       }
       return shift;
     });
+  }
+  addShift( shift){
+    console.log( "add new shift", shift);
   }
   /**
   TODO: seems there is new syntax for switch, but I get errors with it
@@ -29,6 +34,10 @@ class ShiftStore extends EventEmitter {
     switch( action.type){
       case "RECEIVE_SHIFTS":
         this.shifts = action.shifts;
+        this.emit( "change");
+        break;
+      case "CREATE_SHIFT_SUCCESS":
+        this.addShift( action.shift);
         this.emit( "change");
         break;
       case "DELETE_SHIFT_SUCCESS":

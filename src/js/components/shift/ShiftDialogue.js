@@ -3,6 +3,38 @@ import moment from 'moment';
 import Datetime from 'react-datetime';
 
 export default class ShiftDialogue extends React.Component {
+  constructor(){
+    super();
+    this.state = {
+      new_client_initials : "JW",
+      new_start_time : null,
+      new_end_time : null
+    };
+  }
+  createShift( e){
+    console.log( "create shift clicked initials:", this.state.new_client_initials);
+    this.props.createShift( e, {
+      client_initials: this.state.new_client_initials,
+      start_time : this.state.new_start_time,
+      end_time : this.state.new_end_time
+    });
+  }
+  clientChange( e){
+    console.log( "client changed:", e.target.value);
+    this.setState( { new_client_initials: e.target.value});
+  }
+  startTimeChange( datetime){
+    console.log( "start_time changed:", datetime.format( "DD-MMM-YYYY HH:mm"));
+    this.setState( { new_start_time: datetime});
+    // TODO: rofl this can't be correct
+    if( this.state.new_end_time === null){
+      this.setState( { new_end_time : moment( datetime).add( 9, 'hours')});
+    }
+  }
+  endTimeChange( datetime){
+    console.log( "end time changed:", datetime.format( "DD-MMM-YYYY HH:mm"));
+    this.setState( { new_end_time: datetime});
+  }
   render(){
     const overlayStyles = {
       position: 'fixed',
@@ -72,9 +104,11 @@ export default class ShiftDialogue extends React.Component {
                     </div>
                   ) : (
                     <div className="col-sm-10">
-                      <select id="client_initials" className="form-control" >
-                        <option >JW</option>
-                        <option >SM</option>
+                      <select id="client_initials"
+                        onChange={this.clientChange.bind(this)}
+                        className="form-control" >
+                        <option>JW</option>
+                        <option>SM</option>
                       </select>
                     </div>
                   )
@@ -90,7 +124,8 @@ export default class ShiftDialogue extends React.Component {
                         defaultValue={ this.props.selected_shift.start_time}
                         dateFormat="DD-MMM-YYYY"
                         timeFormat="HH:mm"
-                        viewMode="time" />
+                        viewMode="time"
+                        onChange={this.startTimeChange.bind(this)} />
                   )}
                 </div>
             </div>
@@ -115,7 +150,7 @@ export default class ShiftDialogue extends React.Component {
                       onClick={this.props.deleteShift}>Delete</button>
                   ) : (
                     <button id="create_button" className="btn btn-success"
-                      onClick={this.props.createShift}>Create</button>
+                      onClick={this.createShift.bind( this)}>Create</button>
                   )
                 }
               </div>

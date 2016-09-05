@@ -47,6 +47,12 @@ app.use(function(req, res, next) {
     next();
 });
 
+app.post( "/api/shifts", function( req, res){
+  console.log( "insert new shift:", req.params, req.body, req.data, req.query);
+  // db.collection( "shift").insertOne( )
+  res.json( { result: "ok"});
+});
+
 app.delete( "/api/shift", function( req, res){
   const shift_id = req.query.shift_id;
   db.collection( "shift").deleteOne( { _id: ObjectId( shift_id)})
@@ -61,8 +67,8 @@ app.delete( "/api/shift", function( req, res){
 
 app.get('/api/shift', function(req, res) {
 
-  const month = 8; // parseInt( req.query.month);
-  const year = 2016; // parseInt( req.query.year);
+  const month = parseInt( req.query.month);
+  const year = parseInt( req.query.year);
 
   const dt = moment( [year, month, 1]);
   /*

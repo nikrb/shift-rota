@@ -9,7 +9,25 @@ export function loadShifts( year, month){
     dispatcher.dispatch( { type: "RECEIVE_SHIFTS", shifts: response.data});
   })
   .catch( (err) => {
-    dispatcher.dispatch( {type: "RECEIVE_SHIFTS_FAIL", error: err});
+    dispatcher.dispatch( {type: "RECEIVE_SHIFTS_FAILED", error: err});
+  });
+}
+
+export function createShift( shift){
+  dispatcher.dispatch( { type: "CREATE_SHIFT"});
+  console.log( "create shift post api:", shift);
+
+  axios.post( "/api/shifts", {
+    client_initials: shift.client_initials,
+    start_time: shift.start_time,
+    end_time: shift.end_time
+  })
+  .then( (response) => {
+    dispatcher.dispatch( { type: "CREATE_SHIFT_SUCCESS", shift: response.data});
+  })
+  .catch( (err) => {
+    console.log( "create shift failed:", err);
+    dispatcher.dispatch( { type: "CREATE_SHIFT_FAILED", error: err});
   });
 }
 

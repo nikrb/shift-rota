@@ -39,15 +39,32 @@ export default class Rota extends React.Component {
     const shifts =  ShiftStore.getAll();
     this.setState( { shifts : shifts});
   }
-  deleteShift(){
+  deleteShift( e){
+    e.preventDefault();
     if( this.state.selected_shift){
       ShiftActions.deleteShift( this.state.selected_shift._id);
     } else {
       console.log( "@Rota.deleteShift no shift selected");
     }
   }
-  createShift( shift_data){
+  createShift( e, shift_data){
+    // nbmk: form doesn't have a method prop so (chrome) tries a get and adds question
+    // mark which reloads home page. preventDefault stops this default behaviour
+    e.preventDefault();
     console.log( "create new shift:", shift_data);
+    console.log( "selected shift:", this.state.selected_shift);
+    let { client_initials, start_time, end_time} = shift_data;
+    if( start_time === null){
+      start_time = moment( this.state.selected_shift.start_time).hour( 8).toDate();
+      end_time = moment( start_time).hour( 17).toDate();
+    } else if( end_time === null){
+      end_time = moment( start_time).add( 9, 'hours').toDate();
+    }
+    ShiftActions.createShift( {
+      client_initials : client_initials,
+      start_time : start_time,
+      end_time : end_time
+    });
   }
   prevMonth(e){
     const prev_date = moment( this.state.show_date).subtract( 1, "months");
