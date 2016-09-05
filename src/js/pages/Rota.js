@@ -19,7 +19,7 @@ export default class Rota extends React.Component {
     this.state = {
       shifts : [],
       show_date : moment(),
-      selected_shift: null
+      selected_shift: null  // hide/show create/delete shift dialogue
     };
   }
   componentWillMount(){
@@ -37,7 +37,9 @@ export default class Rota extends React.Component {
   }
   getShifts(){
     const shifts =  ShiftStore.getAll();
-    this.setState( { shifts : shifts});
+    // reloading shifts so selected_shift no longer valid and it will
+    // dismiss the create/delete shift dialogue
+    this.setState( { shifts : shifts, selected_shift: null});
   }
   deleteShift( e){
     e.preventDefault();
