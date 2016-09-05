@@ -68,14 +68,6 @@ function keepUserName( name){
     user_names.push( name);
   }
 }
-function getUserIdByName( users, name){
-  for( var i=0; i < users.length; i++ ){
-    if( users[i].name === name){
-      return users[i]._id;
-    }
-  }
-  return null;
-}
 function getUserIdFromNameInitials( users, name){
   var init = getUsersInitials( [name])[0];
   for( let i=0; i < users.length; i++ ){
@@ -160,8 +152,8 @@ function loadComplete( lines){
   getUsers( user_names)
   .then( function( user_list){
     var shifts = shift_list.map( function( ele){
-      var ownerId = getUserIdFromNameInitials( user_list, ele.owner_name); // getUserIdByName( user_list, ele.owner_name);
-      var clientId = getUserIdFromNameInitials( user_list, ele.client_name); // getUserIdByName( user_list, ele.client_name);
+      var ownerId = getUserIdFromNameInitials( user_list, ele.owner_name);
+      var clientId = getUserIdFromNameInitials( user_list, ele.client_name);
       return {
         owner_id : ownerId,
         client_id : clientId,
