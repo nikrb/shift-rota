@@ -76,9 +76,29 @@ function getUserIdByName( users, name){
   }
   return null;
 }
+function getUserIdFromNameInitials( users, name){
+  var init = getUsersInitials( [name])[0];
+  for( let i=0; i < users.length; i++ ){
+    if( users[i].initials === init){
+      return users[i]._id;
+    }
+  }
+  return null;
+}
+function getUsersInitials( names){
+  let initials = [];
+  names.forEach( function( name){
+    const bits = name.split( " ");
+    initials.push( bits[0].charAt(0).toUpperCase() +
+      bits[bits.length-1].charAt(0).toUpperCase());
+  });
+  return initials;
+}
 function getUsers( names){
   var promise = new Promise( function(resolve, reject){
-    db.collection( "user").find( { name : { $in : names}})
+    // use initials instead of name
+    const initials = getUsersInitials( names);
+    db.collection( "user").find( { initials : { $in : initials}})
     .toArray( function( err, users){
       if( err){
         console.error( "failed to gets users:", err);
@@ -92,10 +112,9 @@ function getUsers( names){
 }
 function loadComplete( lines){
   console.log( "line count:", lines.length);
-  var dfmt = "DD-MMM-YYYY HH:mm";
   var owner_name = "";
   var shift_list = [];
-  for( i=0; i < lines.length; i++){
+  for( let i=0; i < lines.length; i++){
     if( hasWeekday( lines[i])){
       // first gather the date, may go over several 'fields'
       let date_str = "";
@@ -119,12 +138,9 @@ function loadComplete( lines){
       var dt = moment( date_str, "dddd DD MMMM YYYY");
       var hours = lines[i+HOURS1];
       var client_name = lines[i+NAME1];
-      var start = lines[i+START1];
-      var end = lines[i+END1];
       var start_time, end_time;
       if( hours === "04:00"){
         // night shift
-        end = lines[i+END2];
         start_time = moment(dt).hours( 17);
         end_time = moment( dt).hours( 17+15);
       } else {
@@ -144,8 +160,8 @@ function loadComplete( lines){
   getUsers( user_names)
   .then( function( user_list){
     var shifts = shift_list.map( function( ele){
-      var ownerId = getUserIdByName( user_list, ele.owner_name);
-      var clientId = getUserIdByName( user_list, ele.client_name);
+      var ownerId = getUserIdFromNameInitials( user_list, ele.owner_name); // getUserIdByName( user_list, ele.owner_name);
+      var clientId = getUserIdFromNameInitials( user_list, ele.client_name); // getUserIdByName( user_list, ele.client_name);
       return {
         owner_id : ownerId,
         client_id : clientId,
@@ -164,14 +180,18 @@ function parseRota( filepath){
   console.log( "parsing rota:", filepath);
   var lines = [];
   new PdfReader().parseFileItems( filepath, function(err, item){
-    if (item && item.text){
-      lines.push( item.text);
+    if( err){
+      console.error( "pdf parse failed:", err);
     } else {
-      if( item == null){
-        // no item seems to be EOF
-        loadComplete( lines);
-      } else if( item.text == null){
-        // no item text - page end I'm guessing
+      if (item && item.text){
+        lines.push( item.text);
+      } else {
+        if( item == null){
+          // no item seems to be EOF
+          loadComplete( lines);
+        } else if( item.text == null){
+          // no item text - page end I'm guessing
+        }
       }
     }
   });
