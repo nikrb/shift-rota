@@ -1,4 +1,4 @@
-React implementation of a shift work rota.
+React implementation of a shift work rota. Node 6.3.1 and express 4.
 
 download repo and npm install.
 
@@ -12,4 +12,3 @@ To start:
 3. run webpack to watch for front end changes
    webpack --watch
 
-Been developing on local win7 machine so unixy version may need some attention to get it to work.
