@@ -86,8 +86,8 @@ export default class Rota extends React.Component {
     if( shift){
       // slot_date exists if shift is not filled
       if( shift.slot_date){
-        const start_time = moment( shift.slot_date, "DD-MMM-YYYY").toDate();
-        const end_time = moment( shift.slot_date, "DD-MMM-YYYY").toDate();
+        const start_time = moment( shift.slot_date, "DD-MMM-YYYY").hour(8).toDate();
+        const end_time = moment( shift.slot_date, "DD-MMM-YYYY").hour(17).toDate();
         this.setState( {selected_shift: { client: { initials:""},
           start_time: start_time, end_time: end_time}});
       } else {

@@ -25,22 +25,32 @@ module.exports.create = function( req, res){
       console.error( "failed to gets users:", err);
       res.json( err);
     } else {
-      let owner_id, client_id;
+      let owner, client;
       if( users[0].initials === "NS"){
-        owner_id = users[0]._id;
-        client_id = users[1]._id;
+        owner = users[0];
+        client = users[1];
       } else {
-        owner_id = users[1]._id;
-        client_id = users[0]._id;
+        owner = users[1];
+        client = users[0];
       }
       db.collection( "shift").insertOne( {
-        owner_id : owner_id,
-        client_id : client_id,
+        owner_id : owner._id,
+        client_id : client._id,
         start_time : new Date( start_time),
         end_time : new Date( end_time)
       }).then( function( results){
         if( results.insertedCount === 1){
-          res.json( results.ops[0]);
+          const new_shift = results.ops[0];
+          let shift = {
+            _id : new_shift._id,
+            client_id : new_shift.client_id,
+            owner_id : new_shift.owner_id,
+            client : client,
+            owner: owner,
+            start_time : new_shift.start_time,
+            end_time : new_shift.end_time
+          };
+          res.json( shift);
         } else {
           res.json( { error: 1, message:"insert failed"});
         }
