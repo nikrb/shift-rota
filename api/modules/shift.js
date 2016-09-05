@@ -100,7 +100,9 @@ module.exports.find = function( req, res){
 
 // helpers ////////////////////////////////////////////////////////// helpers
 
-function findShiftsByDay( target_day, target_month, shifts){
+function findShiftsByDay( target_date, shifts){
+  const target_day = target_date.date();
+  const target_month = target_date.month();
   let ret = [];
   shifts.forEach( function( shift){
     const src_day = shift.start_time.getDate();
@@ -112,37 +114,16 @@ function findShiftsByDay( target_day, target_month, shifts){
   return ret;
 }
 function fillHoles( shifts, start_date, end_date){
-  console.log( "@fillHoles");
   // we want a date for every shift slot, even if a shift doesn't exist
   let current_shift_date = moment( start_date);
-  console.log( "current shift date:", current_shift_date.format( datetime_format));
   // array of shifts to be generated and returned
   let ret = [];
-  const start_day = start_date.date();
-  const days_in_start_month = moment( start_date).add( 1, 'months').date(0).date();
-  const days_in_2nd_month = moment( start_date).add( 2, 'months').date(0).date();
-  const days_in_3rd_month = moment( end_date).add( 1, 'months').date(0).date();
-  // always have 2 months, sometimes three.
-  // possibilities:
-  // mon 1st monthA to sun 4th monthB
-  // mon 29th monthA  thru monthB to sun 2nd monthC
-  // mon 27th monthA to sun 30th (or 31th) monthB
-  const days_in_month = [ days_in_start_month, days_in_2nd_month, days_in_3rd_month];
-
-  console.log( "days_in_month:", days_in_month);
-  // const last_date = moment( end_date);
-  const end_day = end_date.date(); // last_date.subtract( 1, "day").date();
-  console.log( "end_date", end_date.toDate());
-  console.log( "days start[%d] end[%d]", start_day, end_day);
-  let month_ndx = 0; // to iterate days_in_month
-  let current_month = start_date.month();
-  let day = start_day;
   // TODO: february must hit a 4 week layout, mon 1st to sun 28th
   // haha it was this year, Monday, 1 February 2016, 2021, 2027, 2038, 2044, 2049
   // ah not 2016, that's a leap year, and 2044
   const total_days = 35; // 5 weeks worth
   for( let day_count = 0; day_count < total_days; day_count++){
-    const shifts_for_day = findShiftsByDay( day, current_month, shifts);
+    const shifts_for_day = findShiftsByDay( current_shift_date, shifts);
     let both_shifts = {
       day: { slot_date: current_shift_date.format( date_format)},
       night: { slot_date: current_shift_date.format( date_format)}
@@ -159,14 +140,6 @@ function fillHoles( shifts, start_date, end_date){
     }
     ret.push( both_shifts);
     current_shift_date.add( 1, 'day');
-    // TODO: can't we just increment a moment.js date?
-    if( day >= days_in_month[month_ndx]){
-      day = 1;
-      month_ndx += 1;
-      current_month += 1;
-    } else {
-      day += 1;
-    }
   }
   return ret;
 }
