@@ -15,6 +15,7 @@ const datetime_format = "DD-MMM-YYYY HH:mm";
 const date_format = "DD-MMM-YYYY"; // moment format
 
 module.exports.create = function( req, res){
+  // FIXME: post body is empty
   console.log( "insert new shift:", req.params, req.body, req.data, req.query);
   // db.collection( "shift").insertOne( )
   res.json( { result: "ok"});
