@@ -16,7 +16,7 @@ class ShiftStore extends EventEmitter {
     this.shifts = this.shifts.map( (shift) => {
       // FIXME: I don't think we use null values anymore, need to set a dummy
       // shift with slot_date set to date part of start_time of shift we're removing
-      const slot_date = moment( shift.start_time).startOf( 'day');
+      const slot_date = moment( shift.day.start_time).startOf( 'day');
       if( shift.day && shift.day._id === shift_tgt_id){
         shift.day = { slot_date: slot_date};
       } else if( shift.night && shift.night._id === shift_tgt_id){
