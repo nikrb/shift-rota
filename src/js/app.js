@@ -2,7 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 
+// TODO: we don't use style/style2 but seems to import all the css
 import style from '../scss/app.scss';
+import style2 from '../scss/react-datetime.css';
 
 import Bootstrap from 'bootstrap-without-jquery';
 
