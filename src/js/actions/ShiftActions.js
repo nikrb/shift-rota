@@ -15,7 +15,6 @@ export function loadShifts( year, month){
 
 export function createShift( shift){
   dispatcher.dispatch( { type: "CREATE_SHIFT"});
-  console.log( "create shift post api:", shift);
   axios.post( "/api/shifts", shift)
   .then( (response) => {
     dispatcher.dispatch( { type: "CREATE_SHIFT_SUCCESS", shift: response.data});

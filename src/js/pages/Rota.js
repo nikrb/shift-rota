@@ -49,12 +49,10 @@ export default class Rota extends React.Component {
       console.log( "@Rota.deleteShift no shift selected");
     }
   }
-  createShift( e, shift_data){
+  createShift( e, shift_data, day_row){
     // nbmk: form doesn't have a method prop so (chrome) tries a get and adds question
     // mark which reloads home page. preventDefault stops this default behaviour
     e.preventDefault();
-    console.log( "create new shift:", shift_data);
-    console.log( "selected shift:", this.state.selected_shift);
     let { client_initials, start_time, end_time} = shift_data;
     if( start_time === null){
       start_time = moment( this.state.selected_shift.start_time).hour( 8).toDate();
@@ -82,12 +80,14 @@ export default class Rota extends React.Component {
       this.loadShifts();
     });
   }
-  shiftClicked( shift){
+  shiftClicked( shift, day_row){
     if( shift){
       // slot_date exists if shift is not filled
       if( shift.slot_date){
-        const start_time = moment( shift.slot_date, "DD-MMM-YYYY").hour(8).toDate();
-        const end_time = moment( shift.slot_date, "DD-MMM-YYYY").hour(17).toDate();
+        const start_hour = day_row ? 8 : 17;
+        const shift_length = day_row ? 9 : 15;
+        const start_time = moment( shift.slot_date, "DD-MMM-YYYY").hour(start_hour).toDate();
+        const end_time = moment( start_time).add( shift_length, 'hours').toDate();
         this.setState( {selected_shift: { client: { initials:""},
           start_time: start_time, end_time: end_time}});
       } else {
@@ -98,7 +98,6 @@ export default class Rota extends React.Component {
     }
   }
   onDlgClick( e){
-    console.log( "@Rota.onDlgClick");
     e.stopPropagation();
   }
   onClosed(){

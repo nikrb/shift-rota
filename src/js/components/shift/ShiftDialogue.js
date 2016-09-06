@@ -12,11 +12,14 @@ export default class ShiftDialogue extends React.Component {
     };
   }
   createShift( e){
-    console.log( "create shift clicked initials:", this.state.new_client_initials);
+    const start_time = this.state.new_start_time === null ?
+      this.props.selected_shift.start_time : this.state.new_start_time;
+    const end_time = this.state.new_end_time === null ?
+      this.props.selected_shift.start_time : this.state.new_start_time;
     this.props.createShift( e, {
       client_initials: this.state.new_client_initials,
-      start_time : this.state.new_start_time,
-      end_time : this.state.new_end_time
+      start_time : start_time,
+      end_time : end_time
     });
   }
   clientChange( e){
