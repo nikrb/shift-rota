@@ -2,7 +2,7 @@ import React from 'react';
 
 export default class ShiftTableRow extends React.Component {
   cellClick( data){
-    this.props.onShiftClicked( data);
+    this.props.onShiftClicked( data, this.props.day_row);
   }
   render(){
     const hdr = this.props.day_row? <td key="day">Day</td> : <td key="night">Night</td>;
