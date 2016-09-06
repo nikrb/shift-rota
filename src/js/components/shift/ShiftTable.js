@@ -3,9 +3,6 @@ import React from 'react';
 import ShiftTableSection from './ShiftTableSection';
 
 export default class ShiftTable extends React.Component {
-  // shiftClicked( shift){
-  //   this.props.shiftClicked( shift);
-  // }
   render(){
     let first_date = new Date( this.props.show_date);
 
