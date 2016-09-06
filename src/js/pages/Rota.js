@@ -98,7 +98,6 @@ export default class Rota extends React.Component {
     }
   }
   onDlgClick( e){
-    console.log( "@Rota.onDlgClick");
     e.stopPropagation();
   }
   onClosed(){
