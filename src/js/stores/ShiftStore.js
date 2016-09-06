@@ -45,7 +45,8 @@ class ShiftStore extends EventEmitter {
         }
       } else {
         const night_shift = this.shifts[i].night;
-        if( typeof night_shift.slot_date !== "undefined" && ins_date === night_shift.slot_date){
+        if( typeof night_shift.slot_date !== "undefined" &&
+            ins_date.format( "DD-MMM-YYYY") === night_shift.slot_date){
           this.shifts[i].night = ins_shift;
           break;
         }
@@ -53,7 +54,6 @@ class ShiftStore extends EventEmitter {
     }
   }
   addShift( shift){
-    console.log( "add new shift", shift);
     this.insertShift( shift);
   }
   /**
