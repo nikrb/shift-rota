@@ -63,9 +63,15 @@ module.exports.create = function( req, res){
 
 module.exports.delete = function( req, res){
   const shift_id = req.query.shift_id;
-  db.collection( "shift").deleteOne( { _id: ObjectId( shift_id)})
+  db.collection( "shift").findOneAndDelete( { _id: ObjectId( shift_id)})
   .then( function( results){
-    res.json( { result: results.result.ok});
+    let ds = results.value;
+    ds.deletion_date = new Date();
+    db.collection( "shift_history").insertOne( results.value)
+    .then( function( results){
+      if( !results.result.ok ) console.error( "shift insert into shift_history failed:", ds);
+    });
+    res.json( { result: results.ok});
   })
   .catch( function( error){
     console.log( "@server/app.delete:/api/shift failed", error);
