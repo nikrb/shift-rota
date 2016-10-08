@@ -14,10 +14,10 @@ export default class ShiftTableRow extends React.Component {
               // slot_date exists for a shift slot that isn't filled
               // we used to just have shift as null
               if( col.slot_date){
-                return <td className={col.grayed?"":"grayed"}
+                return <td className={col.background_colour}
                     onClick={this.cellClick.bind( this, col)} key={ndx}></td>;
               } else {
-                return <td className={col.grayed?"":"grayed"}
+                return <td className={col.background_colour}
                     onClick={this.cellClick.bind(this, col)}
                     key={ndx}>{col.client.initials}</td>;
               }

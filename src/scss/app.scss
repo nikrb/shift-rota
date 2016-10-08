@@ -1,5 +1,6 @@
 $table_border_colour:   #dddddd;
 $table_cell_grayed:   #eee;
+$today_highlight_colour: #8c8;
 
 $font-family-base:      'Segoe UI', 'HelveticaNeue-Light', sans-serif;
 
@@ -30,4 +31,8 @@ td {
 
 .grayed {
   background-color: $table_cell_grayed;
+}
+
+.today-highlight {
+  background-color: $today_highlight_colour;
 }

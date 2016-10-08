@@ -28,14 +28,23 @@ export default class ShiftTable extends React.Component {
         // which was fixed, but, just in case ...
         for( let i =0; i < 7 && (ndx*7+i) < this.props.shifts.length; i++){
           const shift = this.props.shifts[ndx*7 + i];
-          let grayed = false;
+          const todays_date = moment();
+          let bg_colour = "";
+          let day_dt;
           if ( shift.day.slot_date){
-            grayed = new Date( shift.day.slot_date).getMonth() === target_month;
+            day_dt = moment( new Date( shift.day.slot_date));
           } else {
-            grayed = new Date( shift.day.start_time).getMonth() === target_month;
+            day_dt = moment( new Date( shift.day.start_time));
           }
-          const day = { ...shift.day, grayed: grayed};
-          const night = { ...shift.night, grayed: grayed};
+          if( day_dt.isSame( todays_date, 'day')){
+            bg_colour = "today-highlight";
+          } else {
+            if( day_dt.month() !== target_month){
+              bg_colour = "grayed";
+            }
+          }
+          const day = { ...shift.day, background_colour: bg_colour};
+          const night = { ...shift.night, background_colour: bg_colour};
           day_cols.push( day);
           night_cols.push( night);
         }
