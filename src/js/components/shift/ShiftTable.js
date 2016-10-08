@@ -25,7 +25,7 @@ export default class ShiftTable extends React.Component {
       let day_cols = [];
       let night_cols = [];
       if( this.props.shifts.length){
-        // check again shift.length stop crunch should we not get correct shift list
+        // check against shift.length stop crunch should we not get correct shift list
         // which was fixed, but, just in case ...
         for( let i =0; i < 7 && (ndx*7+i) < this.props.shifts.length; i++){
           const shift = this.props.shifts[ndx*7 + i];
