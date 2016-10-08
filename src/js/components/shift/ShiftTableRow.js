@@ -5,7 +5,7 @@ export default class ShiftTableRow extends React.Component {
     this.props.onShiftClicked( data, this.props.day_row);
   }
   render(){
-    const hdr = this.props.day_row? <td key="day">Day</td> : <td key="night">Night</td>;
+    const hdr = this.props.day_row? <td>Day</td> : <td>Night</td>;
     return (
       <tr>{hdr}
           {this.props.cols.map( ( col, ndx) => {
