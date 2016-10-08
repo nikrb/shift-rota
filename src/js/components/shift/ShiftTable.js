@@ -14,7 +14,6 @@ export default class ShiftTable extends React.Component {
     const start_week = moment( first_date).week();
     const end_week = moment( first_date).endOf( 'month').week();
     const week_count = end_week - start_week;
-    console.log( "week count:", week_count);
 
     let week_commencing = [];
     week_commencing.push( new Date( first_date.setDate(diff)));
