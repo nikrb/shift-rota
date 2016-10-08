@@ -6,7 +6,7 @@ import ShiftTableSection from './ShiftTableSection';
 export default class ShiftTable extends React.Component {
   render(){
     let first_date = new Date( this.props.show_date);
-
+    const target_month = moment( first_date).month();
     // get the 1st day of the month and adjust the start date to the monday
     first_date.setDate( 1);
     const first_day = first_date.getDay();
@@ -25,10 +25,20 @@ export default class ShiftTable extends React.Component {
       let day_cols = [];
       let night_cols = [];
       if( this.props.shifts.length){
+        // check again shift.length stop crunch should we not get correct shift list
+        // which was fixed, but, just in case ...
         for( let i =0; i < 7 && (ndx*7+i) < this.props.shifts.length; i++){
           const shift = this.props.shifts[ndx*7 + i];
-          day_cols.push( shift.day);
-          night_cols.push( shift.night);
+          let grayed = false;
+          if ( shift.day.slot_date){
+            grayed = new Date( shift.day.slot_date).getMonth() === target_month;
+          } else {
+            grayed = new Date( shift.day.start_time).getMonth() === target_month;
+          }
+          const day = { ...shift.day, grayed: grayed};
+          const night = { ...shift.night, grayed: grayed};
+          day_cols.push( day);
+          night_cols.push( night);
         }
       } else {
         for( let i=0; i < 7; i++){

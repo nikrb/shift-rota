@@ -1,4 +1,5 @@
 $table_border_colour:   #dddddd;
+$table_cell_grayed:   #eee;
 
 $font-family-base:      'Segoe UI', 'HelveticaNeue-Light', sans-serif;
 
@@ -25,4 +26,8 @@ td:hover {
 
 td {
   cursor: pointer;
+}
+
+.grayed {
+  background-color: $table_cell_grayed;
 }
