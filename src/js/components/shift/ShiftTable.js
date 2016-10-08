@@ -30,11 +30,12 @@ export default class ShiftTable extends React.Component {
           const shift = this.props.shifts[ndx*7 + i];
           const todays_date = moment();
           let bg_colour = "";
-          let day_dt;
+          let day_dt = moment();
+          // nbmk firefox doesn't like it if we pass lazy args to moment constructor!
           if ( shift.day.slot_date){
-            day_dt = moment( new Date( shift.day.slot_date));
+            day_dt = moment( shift.day.slot_date, "DD-MMM-YYYY");
           } else {
-            day_dt = moment( new Date( shift.day.start_time));
+            day_dt = moment( shift.day.start_time);
           }
           if( day_dt.isSame( todays_date, 'day')){
             bg_colour = "today-highlight";
