@@ -157,11 +157,8 @@ function fillHoles( shifts, start_date, end_date){
   let current_shift_date = moment( start_date);
   // array of shifts to be generated and returned
   let ret = [];
-  // TODO: february must hit a 4 week layout, mon 1st to sun 28th
-  // haha it was this year, Monday, 1 February 2016, 2021, 2027, 2038, 2044, 2049
-  // ah not 2016, that's a leap year, and 2044
-  const total_days = 35; // 5 weeks worth
-  for( let day_count = 0; day_count < total_days; day_count++){
+  const total_days = end_date.diff( start_date, 'days');
+  for( let day_count = 0; day_count <= total_days; day_count++){
     const shifts_for_day = findShiftsByDay( current_shift_date, shifts);
     let both_shifts = {
       day: { slot_date: current_shift_date.format( date_format)},
