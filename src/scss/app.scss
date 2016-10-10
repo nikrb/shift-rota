@@ -4,6 +4,17 @@ $today_highlight_colour: #ffa;
 
 $font-family-base:      'Segoe UI', 'HelveticaNeue-Light', sans-serif;
 
+
+*, *:before, *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
 .modal-dialogue-close {
   a:hover {
     text-decoration: none;
@@ -35,4 +46,25 @@ td {
 
 .today-highlight {
   background-color: $today_highlight_colour;
+}
+
+.container-columns, footer, header {
+  position: relative;
+  margin: .5em;
+}
+
+.column-left, .column-right, footer, header {
+  border: 1px solid  #ccc;
+  padding: 1.25em;
+}
+
+.column-left {
+  margin-bottom: .5em;
+}
+
+
+@media screen and (min-width: 1024px ) {
+  .column-left { margin-right: 50%; }
+
+	.column-right { position: absolute; top: 0; right: 0; width: 50%; }
 }

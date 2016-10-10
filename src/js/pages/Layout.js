@@ -12,16 +12,10 @@ export default class Layout extends React.Component {
     };
     return (
       <div>
-        <Nav location={location} />
-
-        <div className="container" style={containerStyle} >
-          <div className="row">
-            <div className="col-lg-12">
-              <h1>Shift Rota App</h1>
-              {this.props.children}
-            </div>
-          </div>
-        </div>
+        <header>
+          <Nav location={location} />
+        </header>
+        {this.props.children}
       </div>
     );
   }

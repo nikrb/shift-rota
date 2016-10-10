@@ -109,7 +109,7 @@ export default class Rota extends React.Component {
     };
     const days_in_month = this.state.show_date.daysInMonth();
     return (
-      <div className="container text-center">
+      <div className="container">
         <h4>Nik{"\u0027"}s Rota</h4>
         <div style={month_style}>
           <button className="btn btn-primary btn-sm" onClick={this.prevMonth.bind(this)} >

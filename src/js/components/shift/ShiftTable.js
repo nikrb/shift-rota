@@ -20,6 +20,8 @@ export default class ShiftTable extends React.Component {
     for( let i = 0; i<week_count; i++){
       week_commencing.push( new Date( first_date.setDate( first_date.getDate()+7)));
     }
+    let left_rows = [];
+    let right_rows = [];
     const rows = week_commencing.map( ( start_date, ndx) => {
       let day_cols = [];
       let night_cols = [];
@@ -55,6 +57,27 @@ export default class ShiftTable extends React.Component {
           night_cols.push( null);
         }
       }
+      if( ndx%2){
+        right_rows.push(
+
+            <div className="well">
+              <ShiftTableSection key={ndx} start_date={start_date}
+                              day_cols={day_cols}
+                              night_cols={night_cols}
+                              onShiftClicked={this.props.shiftClicked} />
+            </div>
+        );
+      } else {
+        left_rows.push(
+
+            <div className="well">
+              <ShiftTableSection key={ndx} start_date={start_date}
+                              day_cols={day_cols}
+                              night_cols={night_cols}
+                              onShiftClicked={this.props.shiftClicked} />
+            </div>
+        );
+      }
       return (
         <div className="well">
           <ShiftTableSection key={ndx} start_date={start_date}
@@ -65,7 +88,14 @@ export default class ShiftTable extends React.Component {
       );
     });
     return (
-      <div>{rows}</div>
+      <div className="container-columns">
+        <div className="column-left">
+          {left_rows}
+        </div>
+        <div className="column-right">
+          {right_rows}
+        </div>
+      </div>
     );
   }
 }
