@@ -12,6 +12,7 @@ $font-family-base:      'Segoe UI', 'HelveticaNeue-Light', sans-serif;
 }
 
 body {
+  text-align: center;
   margin: 0;
 }
 
@@ -20,16 +21,25 @@ body {
     text-decoration: none;
   }
 }
-
+.well {
+  padding: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 0px;
+}
 table {
   border-top: 2px solid $table_border_colour;
+}
+/* cerulean override */
+.table {
+  margin-bottom: 5px;
 }
 
 td, th {
   border: 2px solid $table_border_colour;
-  width: 10%;
   text-align: center;
   vertical-align: middle;
+  font-size: .7em;
+  font-weight: normal;
 }
 
 td:hover {
