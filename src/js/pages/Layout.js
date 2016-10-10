@@ -7,9 +7,6 @@ import Nav from '../components/layout/Nav.js';
 export default class Layout extends React.Component {
   render(){
     const { location } = this.props;
-    const containerStyle = {
-      marginTop : "60px"
-    };
     return (
       <div>
         <header>

@@ -16,6 +16,10 @@ body {
   margin: 0;
 }
 
+.rota-wrapper {
+  margin: 5%;
+  margin-top: 5em;
+}
 .modal-dialogue-close {
   a:hover {
     text-decoration: none;
@@ -27,14 +31,18 @@ body {
   margin-bottom: 0px;
 }
 table {
+  width: 100%;
   border-top: 2px solid $table_border_colour;
 }
 /* cerulean override */
 .table {
   margin-bottom: 5px;
 }
-
+tr {
+  line-height: 1.5em;
+}
 td, th {
+  width: 10%;
   border: 2px solid $table_border_colour;
   text-align: center;
   vertical-align: middle;
@@ -59,22 +67,13 @@ td {
 }
 
 .container-columns, footer, header {
-  position: relative;
   margin: .5em;
 }
 
-.column-left, .column-right, footer, header {
-  border: 1px solid  #ccc;
-  padding: 1.25em;
-}
-
-.column-left {
-  margin-bottom: .5em;
-}
-
-
 @media screen and (min-width: 1024px ) {
-  .column-left { margin-right: 50%; }
-
-	.column-right { position: absolute; top: 0; right: 0; width: 50%; }
+  .well {
+    float: left;
+    width: 50%;
+    margin-bottom: 5px;
+  }
 }

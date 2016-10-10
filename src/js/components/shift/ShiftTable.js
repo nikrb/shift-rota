@@ -57,6 +57,7 @@ export default class ShiftTable extends React.Component {
           night_cols.push( null);
         }
       }
+      /*
       if( ndx%2){
         right_rows.push(
 
@@ -77,7 +78,7 @@ export default class ShiftTable extends React.Component {
                               onShiftClicked={this.props.shiftClicked} />
             </div>
         );
-      }
+      }*/
       return (
         <div className="well">
           <ShiftTableSection key={ndx} start_date={start_date}
@@ -89,12 +90,7 @@ export default class ShiftTable extends React.Component {
     });
     return (
       <div className="container-columns">
-        <div className="column-left">
-          {left_rows}
-        </div>
-        <div className="column-right">
-          {right_rows}
-        </div>
+        {rows}
       </div>
     );
   }

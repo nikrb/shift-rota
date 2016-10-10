@@ -7,7 +7,7 @@ export default class ShiftTableSection extends React.Component {
   render(){
     const key_ndx = this.props.start_date.getDate();
     return (
-      <table className="table">
+      <table>
         <thead>
           <ShiftTableWeekHeader start_date={this.props.start_date} />
         </thead>
