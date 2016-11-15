@@ -111,7 +111,7 @@ function loadComplete( lines){
       // first gather the date, may go over several 'fields'
       let date_str = "";
       // FIXME: handle other eyars
-      const year_re = new RegExp( /2016/);
+      const year_re = new RegExp( /201[6789]/);
       while( i < lines.length){
         date_str += lines[i];
         if( date_str.match( year_re)){
