@@ -1,0 +1,3 @@
+{
+    "ignore": ["bakup/", "dox/", "node_modules/", "scripts/", "README.md"] 
+}
