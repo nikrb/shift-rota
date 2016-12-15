@@ -5,7 +5,7 @@ import ShiftTableRow from './ShiftTableRow';
 
 export default class ShiftTableSection extends React.Component {
   render(){
-    const key_ndx = this.props.start_date.getDate();
+    const key_ndx = this.props.start_date.date();
     return (
       <table>
         <thead>
