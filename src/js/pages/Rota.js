@@ -15,6 +15,8 @@ import * as ShiftActions from '../actions/ShiftActions';
 export default class Rota extends React.Component {
   constructor(){
     super();
+    // FIXME: set first day of week to monday
+    moment.locale( 'en-gb');
     this.getShifts = this.getShifts.bind(this);
     this.state = {
       shifts : [],
@@ -108,6 +110,7 @@ export default class Rota extends React.Component {
       margin: "1em"
     };
     const days_in_month = this.state.show_date.daysInMonth();
+    console.log( "days in month:", days_in_month);
     return (
       <div className="rota-wrapper">
         <h4>Nik{"\u0027"}s Rota</h4>
@@ -122,7 +125,7 @@ export default class Rota extends React.Component {
             {"\u276f"}
           </button>
         </div>
-        <ShiftTable show_date={this.state.show_date.toDate()} shifts={this.state.shifts}
+        <ShiftTable show_date={this.state.show_date} shifts={this.state.shifts}
           days_in_month={days_in_month} shiftClicked={this.shiftClicked.bind(this)} />
         <ShiftDialogue selected_shift={this.state.selected_shift}
           onDlgClick={this.onDlgClick.bind(this)}
