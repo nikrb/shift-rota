@@ -5,13 +5,21 @@ import ShiftTableSection from './ShiftTableSection';
 
 export default class ShiftTable extends React.Component {
   render(){
+    if( this.props.shifts.length === 0){
+      return ( <div></div>);
+    }
     console.log( "show date:", this.props.show_date.format( "DD-MMM-YYYY"));
     let first_date = moment( this.props.show_date);
+    const target_month = first_date.month();
     const month_start = moment( first_date).startOf( 'month');
     first_date = moment( month_start).startOf( 'week');
     const start_week = month_start.week();
     const end_week = moment( this.props.show_date).endOf( 'month').week();
-    const week_count = end_week - start_week;
+    let week_count = end_week - start_week;
+    // check for year end
+    if( start_week > end_week){
+      week_count = end_week;
+    }
 
     console.log( "week start[%d] end[%d]", start_week, end_week);
 
@@ -22,57 +30,44 @@ export default class ShiftTable extends React.Component {
       week_commencing.push( moment( first_date));
       first_date.add( 1, 'weeks');
     }
-    console.log( "weeks:", week_commencing);
-    console.log( "shift data:", this.props.shifts);
     let rows = [];
-    let day_cols = [];
-    let night_cols = [];
-    if( this.props.shifts.length){
-      const rows = week_commencing.map( ( start_date, ndx) => {
-        console.log( "process week [%s] shifts length[%d]", start_date.format( 'DD-MMM-YYYY'), this.props.shifts.length);
-        if( this.props.shifts.length){
-          // check against shift.length stop crunch should we not get correct shift list
-          // which was fixed, but, just in case ...
-          for( let i =0; i < 7 && (ndx*7+i) < this.props.shifts.length; i++){
-            const shift = this.props.shifts[ndx*7 + i];
-            console.log( "consider shift:", shift);
-            const todays_date = moment();
-            let bg_colour = "";
-            let day_dt = moment();
-            // nbmk firefox doesn't like it if we pass lazy args to moment constructor!
-            if ( shift.day.slot_date){
-              day_dt = moment( shift.day.slot_date, "DD-MMM-YYYY");
-            } else {
-              day_dt = moment( shift.day.start_time);
-            }
-            if( day_dt.isSame( todays_date, 'day')){
-              bg_colour = "today-highlight";
-            } else {
-              if( day_dt.month() !== target_month){
-                bg_colour = "grayed";
-              }
-            }
-            const day = { ...shift.day, background_colour: bg_colour};
-            const night = { ...shift.night, background_colour: bg_colour};
-            day_cols.push( day);
-            night_cols.push( night);
+    const todays_date = moment();
+    rows = week_commencing.map( ( start_date, ndx) => {
+      let day_cols = [];
+      let night_cols = [];
+      // check against shift.length stop crunch should we not get correct shift list
+      // which was fixed, but, just in case ...
+      for( let i =0; i < 7 && (ndx*7+i) < this.props.shifts.length; i++){
+        const shift = this.props.shifts[ndx*7 + i];
+        let bg_colour = "";
+        let day_dt = moment();
+        // nbmk firefox doesn't like it if we pass lazy args to moment constructor!
+        if ( shift.day.slot_date){
+          day_dt = moment( shift.day.slot_date, "DD-MMM-YYYY");
+        } else {
+          day_dt = moment( shift.day.start_time);
+        }
+        if( day_dt.isSame( todays_date, 'day')){
+          bg_colour = "today-highlight";
+        } else {
+          if( day_dt.month() !== target_month){
+            bg_colour = "grayed";
           }
         }
-        return (
-          <div className="well">
-            <ShiftTableSection key={ndx} start_date={start_date}
-                            day_cols={day_cols}
-                            night_cols={night_cols}
-                            onShiftClicked={this.props.shiftClicked} />
-          </div>
-        );
-      });
-    } else {
-      for( let i=0; i < 7; i++){
-        day_cols.push( null);
-        night_cols.push( null);
+        const day = { ...shift.day, background_colour: bg_colour};
+        const night = { ...shift.night, background_colour: bg_colour};
+        day_cols.push( day);
+        night_cols.push( night);
       }
-    }
+      return (
+        <div className="well">
+          <ShiftTableSection key={ndx} start_date={start_date}
+                          day_cols={day_cols}
+                          night_cols={night_cols}
+                          onShiftClicked={this.props.shiftClicked} />
+        </div>
+      );
+    });
     return (
       <div className="container-columns">
         {rows}
