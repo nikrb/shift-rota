@@ -31,7 +31,8 @@
     "start-api": "nodemon api/server.js",
     "dos-start": "node_modules/.bin/nodemon api/server.js",
     "dos-run-mongo": "start mongod --port 27017 --dbpath \"C:/Program Files/MongoDB/data/db\"",
-    "dos-all": "npm run dos-run-mongo && npm run dos-start"
+    "dos-all": "npm run dos-run-mongo && npm run dos-start",
+    "restoreshifts": "mongorestore --db rotadb --drop ./bakup/dumps/dump/rotadb/shift.bson"
   },
   "devDependencies": {
     "babel-core": "^6.7.5",
