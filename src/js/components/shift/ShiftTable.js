@@ -60,8 +60,8 @@ export default class ShiftTable extends React.Component {
         night_cols.push( night);
       }
       return (
-        <div className="well">
-          <ShiftTableSection key={ndx} start_date={start_date}
+        <div className="well" key={ndx} >
+          <ShiftTableSection start_date={start_date}
                           day_cols={day_cols}
                           night_cols={night_cols}
                           onShiftClicked={this.props.shiftClicked} />
