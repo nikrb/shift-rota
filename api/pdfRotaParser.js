@@ -40,14 +40,16 @@ night shift:
 
 looks like we need to find the start of the detail as hours isn't always at offset 8
 */
+// new version of shift rota has an extra 00 field
 var HOURS1 = 0, // 8,
-    NAME1 = 1, // 9,
-    END1 = 2, // 10,
-    START1 = 3, // 11,
-    HOURS2 = 4, // 12,
-    NAME2 = 5, // 13,
-    END2 = 6, // 14,
-    START2 = 7 // 15;
+    UNKNOWN_00 = 1,
+    NAME1 = 2, // 9,
+    END1 = 3, // 10,
+    START1 = 4, // 11,
+    HOURS2 = 5, // 12,
+    NAME2 = 6, // 13,
+    END2 = 7, // 14,
+    START2 = 8 // 15;
 var weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
 // create a *unique* list of user (owner/client) names to pull from db
@@ -154,6 +156,7 @@ function loadComplete( lines){
     var shifts = shift_list.map( function( ele){
       var ownerId = getUserIdFromNameInitials( user_list, ele.owner_name);
       var clientId = getUserIdFromNameInitials( user_list, ele.client_name);
+      // console.log( "lookup client [%s]", ele.client_name);
       return {
         owner_id : ownerId,
         client_id : clientId,
