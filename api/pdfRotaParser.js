@@ -42,14 +42,14 @@ looks like we need to find the start of the detail as hours isn't always at offs
 */
 // new version of shift rota has an extra 00 field
 var HOURS1 = 0, // 8,
-    UNKNOWN_00 = 1,
-    NAME1 = 2, // 9,
-    END1 = 3, // 10,
-    START1 = 4, // 11,
-    HOURS2 = 5, // 12,
-    NAME2 = 6, // 13,
-    END2 = 7, // 14,
-    START2 = 8 // 15;
+    // UNKNOWN_00 = 1,
+    NAME1 = 1, // 9,
+    END1 = 2, // 10,
+    START1 = 3, // 11,
+    HOURS2 = 4, // 12,
+    NAME2 = 5, // 13,
+    END2 = 6, // 14,
+    START2 = 7 // 15;
 var weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
 // create a *unique* list of user (owner/client) names to pull from db
@@ -104,7 +104,7 @@ function getUsers( names){
   });
   return promise;
 }
-function loadComplete( lines){
+function generateShiftList( lines){
   console.log( "line count:", lines.length);
   var owner_name = "";
   var shift_list = [];
@@ -151,7 +151,11 @@ function loadComplete( lines){
       }
     }
   }
-  getUsers( user_names)
+  return shift_list;
+}
+function populateUserIds( shift_list){
+  // user_names is global
+  return getUsers( user_names)
   .then( function( user_list){
     var shifts = shift_list.map( function( ele){
       var ownerId = getUserIdFromNameInitials( user_list, ele.owner_name);
@@ -164,30 +168,40 @@ function loadComplete( lines){
         end_time : ele.end_time.toDate()
       };
     });
-    db.collection( "shift").insert( shifts);
-  })
-  .catch( function( err){
-    console.error( "loadComplete failed:", err);
+    return shifts;
   });
 }
 
-function parseRota( filepath){
+function parseRota( filepath, import_flag){
   console.log( "parsing rota:", filepath);
   var lines = [];
-  new PdfReader().parseFileItems( filepath, function(err, item){
-    if( err){
-      console.error( "pdf parse failed:", err);
-    } else {
-      if (item && item.text){
-        lines.push( item.text);
+  return new Promise( function( resolve, reject){
+    new PdfReader().parseFileItems( filepath, function(err, item){
+      if( err){
+        console.error( "pdf parse failed:", err);
       } else {
-        if( item == null){
-          // no item seems to be EOF
-          loadComplete( lines);
-        } else if( item.text == null){
-          // no item text - page end I'm guessing
+        if (item && item.text){
+          lines.push( item.text);
+        } else {
+          if( item == null){
+            // no item seems to be EOF
+            const shift_list = generateShiftList( lines);
+            return populateUserIds( shift_list)
+            .then( function( shifts){
+              if( import_flag){
+                db.collection( "shift").insert( shifts);
+              }
+              resolve( shifts);
+            })
+            .catch( function( err){
+              console.error( "loadComplete failed:", err);
+              reject( "parseRota failed:"+JSON.stringify( err));
+            });
+          } else if( item.text == null){
+            // no item text - page end I'm guessing
+          }
         }
       }
-    }
+    });
   });
 }
